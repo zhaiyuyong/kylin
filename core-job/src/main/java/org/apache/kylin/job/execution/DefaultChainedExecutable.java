@@ -31,6 +31,8 @@ import com.google.common.collect.Maps;
  */
 public class DefaultChainedExecutable extends AbstractExecutable implements ChainedExecutable {
 
+    public static final Integer DEFAULT_PRIORITY = 10;
+
     private final List<AbstractExecutable> subTasks = Lists.newArrayList();
 
     public DefaultChainedExecutable() {
@@ -167,5 +169,10 @@ public class DefaultChainedExecutable extends AbstractExecutable implements Chai
     public void addTask(AbstractExecutable executable) {
         executable.setId(getId() + "-" + String.format("%02d", subTasks.size()));
         this.subTasks.add(executable);
+    }
+
+    @Override
+    public int getDefaultPriority() {
+        return DEFAULT_PRIORITY;
     }
 }
