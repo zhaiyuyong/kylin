@@ -192,7 +192,7 @@ public class CuboidStats {
         this.directChildrenCache = ImmutableMap.<Long, List<Long>> builder()
                 .putAll(CuboidStatsUtil.createDirectChildrenCache(statistics.keySet())).build();
 
-        this.allDescendantsCache = Maps.newHashMap();
+        this.allDescendantsCache = Maps.newConcurrentMap();
     }
 
     private long getExpScanCount(long sourceCuboid, Map<Long, Long> statistics,
