@@ -259,6 +259,10 @@ public class FactDistinctColumnsMapper<KEYIN> extends FactDistinctColumnsMapperB
     }
 
     private void putRowKeyToHLLNew(String[] row) {
+        String classpath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+        logger.info("classpath={}", classpath);
+        String path = System.getProperty("java.class.path");
+        logger.info("classpath={}", path);
         //generate hash for each row key column
         for (int i = 0; i < nRowKey; i++) {
             Hasher hc = hf.newHasher();
