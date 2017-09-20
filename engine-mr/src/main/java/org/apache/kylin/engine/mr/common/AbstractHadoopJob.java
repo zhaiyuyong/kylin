@@ -46,11 +46,13 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.mapred.YARNRunner;
 import org.apache.hadoop.mapreduce.Counters;
 import org.apache.hadoop.mapreduce.InputFormat;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.v2.util.MRApps;
 import org.apache.hadoop.util.ClassUtil;
 import org.apache.hadoop.util.ReflectionUtils;
 import org.apache.hadoop.util.Tool;
@@ -143,6 +145,18 @@ public abstract class AbstractHadoopJob extends Configured implements Tool {
     }
 
     protected int waitForCompletion(Job job) throws IOException, InterruptedException, ClassNotFoundException {
+        String thisclasspath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+        String YARN = YARNRunner.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String jobClassPath = Job.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String maapps = MRApps.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        logger.info("thisclasspath=={}", thisclasspath);
+        System.out.println("thisclasspath==" + thisclasspath);
+        logger.info("YARN=={}", YARN);
+        System.out.println("YARN==" + YARN);
+        logger.info("jobClassPath=={}", jobClassPath);
+        System.out.println("jobClassPath==" + jobClassPath);
+        logger.info("maapps=={}", maapps);
+        System.out.println("maapps==" + maapps);
         int retVal = 0;
         long start = System.nanoTime();
         if (isAsync) {
