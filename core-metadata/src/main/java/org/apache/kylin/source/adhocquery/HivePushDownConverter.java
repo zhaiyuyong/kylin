@@ -31,6 +31,9 @@ import com.google.common.collect.ImmutableSet;
 //TODO: Some workaround ways to make sql readable by hive parser, should replaced it with a more well-designed way
 public class HivePushDownConverter implements IPushDownConverter {
 
+
+    private static String engine = "hive";
+
     @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory.getLogger(HivePushDownConverter.class);
 
@@ -241,8 +244,13 @@ public class HivePushDownConverter implements IPushDownConverter {
     }
 
     public static String doConvert(String originStr) {
+
+        String convertedSql = originStr;
+
         // Step1.Replace " with `
-        String convertedSql = replaceString(originStr, "\"", "`");
+        if (!"presto".equals(engine)) {
+            convertedSql = replaceString(originStr, "\"", "`");
+        }
 
         // Step2.Replace extract functions
         convertedSql = extractReplace(convertedSql);
@@ -291,7 +299,8 @@ public class HivePushDownConverter implements IPushDownConverter {
     }
 
     @Override
-    public String convert(String originSql, String project, String defaultSchema) {
+    public String convert(String originSql, String project, String defaultSchema, String engine) {
+        this.engine = engine;
         return doConvert(originSql);
     }
 }

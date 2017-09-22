@@ -280,6 +280,7 @@ public class ProjectInstance extends RootPersistentEntity {
     }
 
     public void setModels(List<String> models) {
+
         this.models = models;
     }
 

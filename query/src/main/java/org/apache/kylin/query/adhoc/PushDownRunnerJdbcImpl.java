@@ -37,8 +37,11 @@ public class PushDownRunnerJdbcImpl implements IPushDownRunner {
 
     private static org.apache.kylin.query.adhoc.JdbcConnectionPool pool = null;
 
+    private KylinConfig config;
+
     @Override
     public void init(KylinConfig config) {
+        this.config = config;
         if (pool == null) {
             pool = new JdbcConnectionPool();
             JdbcConnectionFactory factory = new JdbcConnectionFactory(config.getJdbcUrl(), config.getJdbcDriverClass(),
@@ -61,6 +64,11 @@ public class PushDownRunnerJdbcImpl implements IPushDownRunner {
             throws Exception {
         Statement statement = null;
         Connection connection = this.getConnection();
+
+        if (config.getJdbcDriverClass().contains("PrestoDriver")){
+            connection.setCatalog("hive");
+        }
+
         ResultSet resultSet = null;
 
         //extract column metadata

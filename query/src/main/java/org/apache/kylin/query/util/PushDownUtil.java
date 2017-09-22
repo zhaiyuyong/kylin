@@ -62,6 +62,12 @@ public class PushDownUtil {
             return false;
         }
 
+        String engine = "hive";
+
+        if (kylinConfig.getJdbcDriverClass().contains("PrestoDriver")){
+            engine = "presto";
+        }
+
         Throwable rootCause = ExceptionUtils.getRootCause(sqlException);
         boolean isExpectedCause = rootCause != null && (rootCause.getClass().equals(NoRealizationFoundException.class));
 
@@ -88,7 +94,7 @@ public class PushDownUtil {
 
             for (String converterName : kylinConfig.getPushDownConverterClassNames()) {
                 IPushDownConverter converter = (IPushDownConverter) ClassUtil.newInstance(converterName);
-                String converted = converter.convert(sql, project, defaultSchema);
+                String converted = converter.convert(sql, project, defaultSchema, engine);
                 if (!sql.equals(converted)) {
                     logger.info("the query is converted to {} after applying converter {}", converted, converterName);
                     sql = converted;

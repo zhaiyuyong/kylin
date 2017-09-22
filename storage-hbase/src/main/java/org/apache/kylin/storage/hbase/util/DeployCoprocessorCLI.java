@@ -354,6 +354,10 @@ public class DeployCoprocessorCLI {
         Path uploadPath = null;
         File localCoprocessorFile = new File(localCoprocessorJar);
 
+        if (!localCoprocessorFile.exists()) {
+            throw new RuntimeException("localCoprocessorFile " + localCoprocessorJar + " is not exists!");
+        }
+
         // check existing jars
         if (oldJarPaths == null) {
             oldJarPaths = new HashSet<String>();

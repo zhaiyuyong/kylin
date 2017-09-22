@@ -50,7 +50,11 @@ class JdbcConnectionFactory implements PoolableObjectFactory {
 
     @Override
     public Connection makeObject() throws Exception {
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        String pw = null;
+        if (pw != null && "".equals(password)) {
+            pw = password;
+        }
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, pw);
         return connection;
     }
 
